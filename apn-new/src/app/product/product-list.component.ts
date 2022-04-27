@@ -8,6 +8,7 @@ import { IProduct } from "./product";
 })
 export class productListComponent implements OnInit{
 
+
     pageTitle:string='Product List';
     imageWidth:number=50;
     imageMargin=2;
@@ -67,6 +68,9 @@ export class productListComponent implements OnInit{
           }
     ];
 
+    filteredproducts:IProduct[]=[];
+
+
     get listFilter():string{
       return this._listFilter;
     }
@@ -74,6 +78,7 @@ export class productListComponent implements OnInit{
     set listFilter(value:string){
       this._listFilter=value;
       console.log('insetter',value);
+      this.filteredproducts=this.performFilter(value);
     }
 
 
@@ -83,7 +88,13 @@ export class productListComponent implements OnInit{
 
     ngOnInit(): void {
       console.log('In OnInit');
-      this._listFilter='cart'
+      this.listFilter='cart';
+    }
+
+    performFilter(filterBy:string): IProduct[] {
+      filterBy=filterBy.toLocaleLowerCase();
+      return this.products.filter((product:IProduct)=>
+                product.productName.toLocaleLowerCase().includes(filterBy));
     }
 
 }
